@@ -21,7 +21,7 @@ public class ScrapingController {
     ScrapingService scrapingService;
 
     @GetMapping("/corona")
-    public CoronaStatResponse getCoronaData() throws IOException {
+    public CoronaStatResponse getCoronaData(){
         return scrapingService.getScrapingData();
     }
 }

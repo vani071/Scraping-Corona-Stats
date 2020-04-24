@@ -7,6 +7,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import java.io.IOException;
 import org.slf4j.Logger;
@@ -16,16 +17,17 @@ import org.slf4j.LoggerFactory;
 public class ScrapingService {
     private final Logger log=LoggerFactory.getLogger(this.getClass());
 
-    public CoronaStatResponse getScrapingData() throws IOException {
+    @Value("${scraping.url.source}")
+    private String urlSource;
 
-        String url = "https://www.covid19.go.id/";
+    public CoronaStatResponse getScrapingData(){
+
         CoronaStatResponse result = new CoronaStatResponse();
-
-        try(WebClient webClient = new WebClient()){
+        try(WebClient webClient = new WebClient();){
             webClient.getOptions().setCssEnabled(false);
             webClient.getOptions().setJavaScriptEnabled(false);
 
-            HtmlPage page = webClient.getPage(url);
+            HtmlPage page = webClient.getPage(urlSource);
 
             Document doc = Jsoup.parse(page.asXml());
 
